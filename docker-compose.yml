@@ -2,7 +2,7 @@ version: '3'
 
 services:
   leagueapi:
-    build: .
+    image: chalkan33/leagueoflegendsapi
     ports: 
       - 9000:9000
     networks:
