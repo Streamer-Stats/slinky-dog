@@ -1,0 +1,39 @@
+---
+swagger: "2.0"
+info:
+  description: Whatsapp communication API
+  title: Whats app integration
+  version: 1.0.0
+consumes:
+- application/io.goswagger.examples.todo-list.v1+json
+produces:
+- application/io.goswagger.examples.todo-list.v1+json
+- application/json
+schemes:
+- http
+paths:
+  /:
+    get:
+      tags:
+        - api
+      operationId: liveMatch
+      responses:
+        200:
+          description: get live league match 
+
+        default:
+          description: generic error response
+          schema:
+            $ref: "#/definitions/error"
+
+definitions:
+  error:
+    type: object
+    required:
+      - message
+    properties:
+      code:
+        type: integer
+        format: int64
+      message:
+        type: string
