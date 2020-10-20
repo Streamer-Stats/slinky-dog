@@ -1,2 +1,2 @@
-![gopher-sync](https://github.com/chalkan3/LeagueOfLegendsApi/workflows/gopher-sync/badge.svg)
+![build-image](https://github.com/chalkan3/LeagueOfLegendsApi/workflows/build-image/badge.svg)
 # LeagueOfLegendsApi
