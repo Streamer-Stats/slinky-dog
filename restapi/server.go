@@ -131,6 +131,7 @@ func (s *Server) SetAPI(api *operations.LeagueAPIAPI) {
 		s.handler = nil
 		return
 	}
+
 	s.api = api
 	s.handler = configureAPI(api)
 }

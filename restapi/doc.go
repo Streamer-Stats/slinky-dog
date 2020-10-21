@@ -5,6 +5,7 @@
 //  Whatsapp communication API
 //  Schemes:
 //    http
+//    ws
 //  Host: localhost
 //  BasePath: /
 //  Version: 1.0.0

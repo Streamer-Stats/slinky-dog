@@ -36,7 +36,7 @@ func configureAPI(api *operations.LeagueAPIAPI) http.Handler {
 	api.JSONConsumer = runtime.JSONConsumer()
 
 	api.JSONProducer = runtime.JSONProducer()
-	
+
 	singletons.GetIoCSingleton().GetContainer().Run(api)
 	
 	api.PreServerShutdown = func() {}

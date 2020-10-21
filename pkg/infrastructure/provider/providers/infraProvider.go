@@ -3,6 +3,7 @@ package providers
 
 
 import (
+	"leagueapi.com.br/rest/pkg/infrastructure/socket"
 	"leagueapi.com.br/rest/pkg/infrastructure/server"
 	"go.uber.org/dig"
 
@@ -14,6 +15,7 @@ type InfraProvider struct {
 
 // Provide is a helper Ioc
 func (provider *InfraProvider) Provide(container *dig.Container) {
+	container.Provide(socket.NewSocket)
 	container.Provide(server.NewServer)
 
 }

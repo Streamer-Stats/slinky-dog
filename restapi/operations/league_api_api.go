@@ -20,6 +20,7 @@ import (
 	"github.com/go-openapi/swag"
 
 	apiops "leagueapi.com.br/rest/restapi/operations/api"
+	"leagueapi.com.br/rest/restapi/operations/live"
 )
 
 // NewLeagueAPIAPI creates a new LeagueAPI instance
@@ -44,6 +45,9 @@ func NewLeagueAPIAPI(spec *loads.Document) *LeagueAPIAPI {
 
 		JSONProducer: runtime.JSONProducer(),
 
+		LiveLiveHandler: live.LiveHandlerFunc(func(params live.LiveParams) middleware.Responder {
+			return middleware.NotImplemented("operation live.Live has not yet been implemented")
+		}),
 		APILiveMatchHandler: apiops.LiveMatchHandlerFunc(func(params apiops.LiveMatchParams) middleware.Responder {
 			return middleware.NotImplemented("operation api.LiveMatch has not yet been implemented")
 		}),
@@ -82,6 +86,8 @@ type LeagueAPIAPI struct {
 	//   - application/json
 	JSONProducer runtime.Producer
 
+	// LiveLiveHandler sets the operation handler for the live operation
+	LiveLiveHandler live.LiveHandler
 	// APILiveMatchHandler sets the operation handler for the live match operation
 	APILiveMatchHandler apiops.LiveMatchHandler
 	// ServeError is called when an error is received, there is a default handler
@@ -160,6 +166,9 @@ func (o *LeagueAPIAPI) Validate() error {
 		unregistered = append(unregistered, "JSONProducer")
 	}
 
+	if o.LiveLiveHandler == nil {
+		unregistered = append(unregistered, "live.LiveHandler")
+	}
 	if o.APILiveMatchHandler == nil {
 		unregistered = append(unregistered, "api.LiveMatchHandler")
 	}
@@ -253,6 +262,10 @@ func (o *LeagueAPIAPI) initHandlerCache() {
 		o.handlers = make(map[string]map[string]http.Handler)
 	}
 
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/live"] = live.NewLive(o.context, o.LiveLiveHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}

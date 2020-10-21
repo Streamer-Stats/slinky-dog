@@ -11,6 +11,9 @@ produces:
 - application/json
 schemes:
 - http
+- ws
+
+
 paths:
   /:
     get:
@@ -25,7 +28,19 @@ paths:
           description: generic error response
           schema:
             $ref: "#/definitions/error"
+  /live:
+      get:
+        tags:
+          - live
+        operationId: live
+        responses:
+          200:
+            description: connect to websocket 
 
+          default:
+            description: generic error response
+            schema:
+              $ref: "#/definitions/error"
 definitions:
   error:
     type: object

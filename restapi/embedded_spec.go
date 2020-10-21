@@ -26,7 +26,8 @@ func init() {
     "application/json"
   ],
   "schemes": [
-    "http"
+    "http",
+    "ws"
   ],
   "swagger": "2.0",
   "info": {
@@ -44,6 +45,25 @@ func init() {
         "responses": {
           "200": {
             "description": "get live league match"
+          },
+          "default": {
+            "description": "generic error response",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/live": {
+      "get": {
+        "tags": [
+          "live"
+        ],
+        "operationId": "live",
+        "responses": {
+          "200": {
+            "description": "connect to websocket"
           },
           "default": {
             "description": "generic error response",
@@ -82,7 +102,8 @@ func init() {
     "application/json"
   ],
   "schemes": [
-    "http"
+    "http",
+    "ws"
   ],
   "swagger": "2.0",
   "info": {
@@ -100,6 +121,25 @@ func init() {
         "responses": {
           "200": {
             "description": "get live league match"
+          },
+          "default": {
+            "description": "generic error response",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/live": {
+      "get": {
+        "tags": [
+          "live"
+        ],
+        "operationId": "live",
+        "responses": {
+          "200": {
+            "description": "connect to websocket"
           },
           "default": {
             "description": "generic error response",

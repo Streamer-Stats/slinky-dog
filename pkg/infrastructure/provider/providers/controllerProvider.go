@@ -14,6 +14,7 @@ type ControllerProvider struct {
 // Provide is a helper Ioc
 func (provider *ControllerProvider) Provide(container *dig.Container) {
 	container.Provide(controllers.NewPlayerController)
+	container.Provide(controllers.NewWebSocketController)
 	container.Provide(hc.NewHandleController)
 
 }
