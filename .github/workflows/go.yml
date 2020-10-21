@@ -1,4 +1,4 @@
-name: gopher-sync
+name: build-image
 
 on:
   push:

@@ -1,0 +1,14 @@
+name: Deploy
+on:
+  release:
+    types: [created]
+jobs:
+  deployment:
+    runs-on: 'ubuntu-latest'
+    steps:
+      - uses: actions/checkout@v1
+      - name: Deploy
+        uses: WyriHaximus/github-action-helm3@v2
+        with:
+          exec: helm upgrade leagueapi ./leagueapichart -n leagueapi
+          kubeconfig: '${{ secrets.KUBECONFIG }}'
