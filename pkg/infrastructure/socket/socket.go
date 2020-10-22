@@ -57,8 +57,10 @@ func (s *Socket) Handle() {
 	var msg string
 	for {
 		msgType, msg = s.recv(client)
-		if msgType != ERR {
-			s.write(client, msg, msgType)
+		if msgType != ERR && client != "brain" {
+			s.write("brain", msg, msgType)
+		} else if client == "brain" {
+			s.write("", msg, msgType)
 		}
 	}
 }
