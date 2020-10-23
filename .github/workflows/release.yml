@@ -2,13 +2,39 @@ name: Deploy
 on:
   release:
     types: [created]
+env:
+  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  GKE_CLUSTER: kube-league   
+  GKE_ZONE: us-central1-c  
+  DEPLOYMENT_NAME: leagueapi
+
 jobs:
-  deployment:
-    runs-on: 'ubuntu-latest'
+  setup-build-publish-deploy:
+    name: Setup, Build, Publish, and Deploy
+    runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v1
-      - name: Deploy
-        uses: WyriHaximus/github-action-helm3@v2
-        with:
-          exec: helm upgrade leagueapi ./leagueapichart -n leagueapi
-          kubeconfig: '${{ secrets.KUBECONFIG }}'
+    - name: Checkout
+      uses: actions/checkout@v2
+  
+    # Setup gcloud CLI
+    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        version: '290.0.1'
+        service_account_key: ${{ secrets.GKE_SA_KEY }}
+        project_id: ${{ secrets.GKE_PROJECT }}
+    # Get the GKE credentials so we can deploy to the cluster
+    - run: |-
+        gcloud container clusters get-credentials "$GKE_CLUSTER" --zone "$GKE_ZONE"
+    # Set up helm
+    - name: Set up Helm
+      run: |-
+        curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+        chmod 700 get_helm.sh
+        ./get_helm.sh
+    
+    # Deploy the Docker image to the GKE cluster
+    - name: Deploy
+      run: |-
+        helm upgrade $DEPLOYMENT_NAME ./leagueapichart -n leagueapi
+
