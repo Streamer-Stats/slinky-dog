@@ -7,6 +7,16 @@ services:
       - 9000:9000
     networks:
       - leagueapi-network
+    links:
+      - "leny:leagueapi"
+  leny:
+    image: chalkan33/leny
+    environment:
+      - HOST=leagueapi
+    networks:
+      - leagueapi-network
+    restart: always
+
 
 networks:
   leagueapi-network:

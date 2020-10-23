@@ -36,14 +36,13 @@ func (s *Socket) recv(client string) (int, string) {
 		return ERR, ""
 	}
 
-	log.Println("client: ", client)
-	log.Println("Recv: ", s.byteToString(msg))
+	log.Println("Recv from "+client+": ", s.byteToString(msg))
 	return msgType, s.byteToString(msg)
 }
 
 func (s *Socket) write(client string, msg string, msgType int) {
 	err := s.Clients[client].WriteMessage(msgType, s.stringToByte(msg))
-	err = s.Clients[""].WriteMessage(msgType, s.stringToByte(msg))
+
 	if err != nil {
 		log.Println(err)
 		return
