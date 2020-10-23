@@ -33,8 +33,15 @@ jobs:
         chmod 700 get_helm.sh
         ./get_helm.sh
     
+    # Set up kubectl
+    - name: Set up kubectl
+      run: |-
+        curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
+        chmod +x ./kubectl
+    
     # Deploy the Docker image to the GKE cluster
     - name: Deploy
       run: |-
         helm upgrade $DEPLOYMENT_NAME ./leagueapichart -n leagueapi
+        kubectl delete pods -n leagueapi --all 
 
