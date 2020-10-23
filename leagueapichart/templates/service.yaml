@@ -7,9 +7,9 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http
+    - port: 80
+      targetPort: 9000
       protocol: TCP
-      name: http
+
   selector:
     {{- include "leagueapichart.selectorLabels" . | nindent 4 }}
