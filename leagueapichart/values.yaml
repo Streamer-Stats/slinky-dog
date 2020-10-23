@@ -47,7 +47,7 @@ ingress:
     # kubernetes.io/tls-acme: "true"
   hosts:
     - host: "api.stream-stats.tk"
-      paths: ["/", "/live"]
+      paths: ["/"]
   tls:
    - secretName: cert-tls
      hosts:
