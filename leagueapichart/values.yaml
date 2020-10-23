@@ -46,12 +46,12 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: api.leagueapi.tk
+    - host: "api.stream-stats.tk"
       paths: [/]
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+  tls:
+   - secretName: cert-tls
+     hosts:
+       - "api.stream-stats.tk"
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
