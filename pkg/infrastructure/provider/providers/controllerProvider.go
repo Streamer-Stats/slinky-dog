@@ -1,10 +1,9 @@
 package providers
 
 import (
-	hc"leagueapi.com.br/rest/application/controllers/handleController"
-	"leagueapi.com.br/rest/application/controllers"
 	"go.uber.org/dig"
-
+	"leagueapi.com.br/rest/application/controllers"
+	hc "leagueapi.com.br/rest/application/controllers/handleController"
 )
 
 // ControllerProvider is a provider for services
@@ -15,6 +14,7 @@ type ControllerProvider struct {
 func (provider *ControllerProvider) Provide(container *dig.Container) {
 	container.Provide(controllers.NewPlayerController)
 	container.Provide(controllers.NewWebSocketController)
+	container.Provide(controllers.NewAuthController)
 	container.Provide(hc.NewHandleController)
 
 }

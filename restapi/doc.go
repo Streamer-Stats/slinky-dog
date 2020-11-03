@@ -12,6 +12,7 @@
 //
 //  Consumes:
 //    - application/io.goswagger.examples.todo-list.v1+json
+//    - application/json
 //
 //  Produces:
 //    - application/io.goswagger.examples.todo-list.v1+json

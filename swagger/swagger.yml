@@ -6,6 +6,7 @@ info:
   version: 1.0.0
 consumes:
 - application/io.goswagger.examples.todo-list.v1+json
+- application/json
 produces:
 - application/io.goswagger.examples.todo-list.v1+json
 - application/json
@@ -28,6 +29,29 @@ paths:
           description: generic error response
           schema:
             $ref: "#/definitions/error"
+  /login:
+    post:
+      tags:
+        - auth
+      operationId: auth
+      parameters:
+        - name: Body
+          in: body
+          schema:
+            $ref: "#/definitions/user"
+    
+      responses:
+        200:
+          description: login into system 
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/user"
+
+        default:
+          description: generic error response
+          schema:
+            $ref: "#/definitions/error"
   /live:
       get:
         tags:
@@ -42,6 +66,22 @@ paths:
             schema:
               $ref: "#/definitions/error"
 definitions:
+  user: 
+    type: object
+    properties:
+      Id:
+        type: integer
+        format: int64
+      username:
+        type: string
+      email: 
+        type: string
+      token:
+        type: string
+      password:
+        type: string
+
+
   error:
     type: object
     required:

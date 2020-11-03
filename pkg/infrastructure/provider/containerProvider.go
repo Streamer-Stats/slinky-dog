@@ -1,19 +1,19 @@
 package provider
 
 import (
+	"log"
+
+	"go.uber.org/dig"
+	providerinterfaces "leagueapi.com.br/rest/pkg/infrastructure/provider/interface"
 	"leagueapi.com.br/rest/pkg/infrastructure/provider/providers"
 	"leagueapi.com.br/rest/pkg/infrastructure/server"
 	"leagueapi.com.br/rest/restapi/operations"
-	"leagueapi.com.br/rest/pkg/infrastructure/provider/interface"
-	"go.uber.org/dig"
-	"log"
-
 )
 
 // ContainerProvider controlls of IoC
 type ContainerProvider struct {
 	Container *dig.Container
-	providers [2]providerinterfaces.IProvider
+	providers [4]providerinterfaces.IProvider
 }
 
 func buildContainerProvider() *dig.Container {
@@ -45,8 +45,10 @@ func (p *ContainerProvider) Run(api *operations.LeagueAPIAPI) {
 func NewIocProvider() *ContainerProvider {
 	return &ContainerProvider{
 		Container: buildContainerProvider(),
-		providers: [2]providerinterfaces.IProvider{
+		providers: [4]providerinterfaces.IProvider{
 			providers.NewInfraProvider(),
+			providers.NewRepositoryProvider(),
+			providers.NewServiceProvider(),
 			providers.NewControllerProvider(),
 		},
 	}

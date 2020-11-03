@@ -20,6 +20,7 @@ import (
 	"github.com/go-openapi/swag"
 
 	apiops "leagueapi.com.br/rest/restapi/operations/api"
+	"leagueapi.com.br/rest/restapi/operations/auth"
 	"leagueapi.com.br/rest/restapi/operations/live"
 )
 
@@ -45,6 +46,9 @@ func NewLeagueAPIAPI(spec *loads.Document) *LeagueAPIAPI {
 
 		JSONProducer: runtime.JSONProducer(),
 
+		AuthAuthHandler: auth.AuthHandlerFunc(func(params auth.AuthParams) middleware.Responder {
+			return middleware.NotImplemented("operation auth.Auth has not yet been implemented")
+		}),
 		LiveLiveHandler: live.LiveHandlerFunc(func(params live.LiveParams) middleware.Responder {
 			return middleware.NotImplemented("operation live.Live has not yet been implemented")
 		}),
@@ -79,6 +83,7 @@ type LeagueAPIAPI struct {
 
 	// JSONConsumer registers a consumer for the following mime types:
 	//   - application/io.goswagger.examples.todo-list.v1+json
+	//   - application/json
 	JSONConsumer runtime.Consumer
 
 	// JSONProducer registers a producer for the following mime types:
@@ -86,6 +91,8 @@ type LeagueAPIAPI struct {
 	//   - application/json
 	JSONProducer runtime.Producer
 
+	// AuthAuthHandler sets the operation handler for the auth operation
+	AuthAuthHandler auth.AuthHandler
 	// LiveLiveHandler sets the operation handler for the live operation
 	LiveLiveHandler live.LiveHandler
 	// APILiveMatchHandler sets the operation handler for the live match operation
@@ -166,6 +173,9 @@ func (o *LeagueAPIAPI) Validate() error {
 		unregistered = append(unregistered, "JSONProducer")
 	}
 
+	if o.AuthAuthHandler == nil {
+		unregistered = append(unregistered, "auth.AuthHandler")
+	}
 	if o.LiveLiveHandler == nil {
 		unregistered = append(unregistered, "live.LiveHandler")
 	}
@@ -203,6 +213,8 @@ func (o *LeagueAPIAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Cons
 		switch mt {
 		case "application/io.goswagger.examples.todo-list.v1+json":
 			result["application/io.goswagger.examples.todo-list.v1+json"] = o.JSONConsumer
+		case "application/json":
+			result["application/json"] = o.JSONConsumer
 		}
 
 		if c, ok := o.customConsumers[mt]; ok {
@@ -262,6 +274,10 @@ func (o *LeagueAPIAPI) initHandlerCache() {
 		o.handlers = make(map[string]map[string]http.Handler)
 	}
 
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/login"] = auth.NewAuth(o.context, o.AuthAuthHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}

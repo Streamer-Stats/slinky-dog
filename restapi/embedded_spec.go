@@ -19,7 +19,8 @@ var (
 func init() {
 	SwaggerJSON = json.RawMessage([]byte(`{
   "consumes": [
-    "application/io.goswagger.examples.todo-list.v1+json"
+    "application/io.goswagger.examples.todo-list.v1+json",
+    "application/json"
   ],
   "produces": [
     "application/io.goswagger.examples.todo-list.v1+json",
@@ -64,6 +65,40 @@ func init() {
         "responses": {
           "200": {
             "description": "connect to websocket"
+          },
+          "default": {
+            "description": "generic error response",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "operationId": "auth",
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/user"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "login into system",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/user"
+              }
+            }
           },
           "default": {
             "description": "generic error response",
@@ -90,12 +125,34 @@ func init() {
           "type": "string"
         }
       }
+    },
+    "user": {
+      "type": "object",
+      "properties": {
+        "Id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "token": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        }
+      }
     }
   }
 }`))
 	FlatSwaggerJSON = json.RawMessage([]byte(`{
   "consumes": [
-    "application/io.goswagger.examples.todo-list.v1+json"
+    "application/io.goswagger.examples.todo-list.v1+json",
+    "application/json"
   ],
   "produces": [
     "application/io.goswagger.examples.todo-list.v1+json",
@@ -149,6 +206,40 @@ func init() {
           }
         }
       }
+    },
+    "/login": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "operationId": "auth",
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/user"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "login into system",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/user"
+              }
+            }
+          },
+          "default": {
+            "description": "generic error response",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -163,6 +254,27 @@ func init() {
           "format": "int64"
         },
         "message": {
+          "type": "string"
+        }
+      }
+    },
+    "user": {
+      "type": "object",
+      "properties": {
+        "Id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "token": {
+          "type": "string"
+        },
+        "username": {
           "type": "string"
         }
       }

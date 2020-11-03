@@ -1,21 +1,41 @@
 version: '3'
 
 services:
-  leagueapi:
-    image: chalkan33/leagueoflegendsapi
-    ports: 
-      - 9000:9000
-    networks:
-      - leagueapi-network
-    links:
-      - "leny:leagueapi"
-  leny:
-    image: chalkan33/leny
+  rabbitmq:
+    image: "rabbitmq:3-management"
     environment:
-      - HOST=leagueapi
+      RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
+      RABBITMQ_DEFAULT_USER: "guest"
+      RABBITMQ_DEFAULT_PASS: "guest"
+      RABBITMQ_DEFAULT_VHOST: "/"
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+
+
+
+  teste-postgres-compose:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: 123
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgresVolume:/var/lib/postgresql/data 
     networks:
       - leagueapi-network
-    restart: always
+      
+  teste-pgadmin-compose:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "ighyss@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD: 123
+    ports:
+      - "16543:80"
+    depends_on:
+      - teste-postgres-compose
+    networks:
+      - leagueapi-network
 
 
 networks:

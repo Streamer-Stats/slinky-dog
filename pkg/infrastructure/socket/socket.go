@@ -59,7 +59,7 @@ func (s *Socket) Handle() {
 		if msgType != ERR && client != "brain" {
 			s.write("brain", msg, msgType)
 		} else if client == "brain" {
-			s.write("", msg, msgType)
+			s.write(client, msg, msgType)
 		}
 	}
 }
